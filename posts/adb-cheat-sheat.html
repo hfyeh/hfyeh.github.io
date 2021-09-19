@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>sharefun | Tags</title>
-  <meta name="description" content="Tag cloud from all the posts">
+  <title>sharefun | ADB Commands Cheat Sheet</title>
+  <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:title" content="Tags">
+  <meta property="og:title" content="ADB Commands Cheat Sheet">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://hfyeh.github.io/tags">
-  <meta property="og:description" content="Tag cloud from all the posts">
+  <meta property="og:url" content="https://hfyeh.github.io/posts/adb-cheat-sheat">
+  <meta property="og:description" content="">
   <meta property="og:site_name" content="sharefun">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:url" content="https://hfyeh.github.io/tags">
-  <meta name="twitter:title" content="Tags">
-  <meta name="twitter:description" content="Tag cloud from all the posts">
+  <meta name="twitter:url" content="https://hfyeh.github.io/posts/adb-cheat-sheat">
+  <meta name="twitter:title" content="ADB Commands Cheat Sheet">
+  <meta name="twitter:description" content="">
 
   
     <meta property="og:image" content="https://hfyeh.github.io/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
@@ -121,171 +121,66 @@
 
 
 
-        <div class="tags-page">
-  <h1 class="tags-page-header">
-    Tags
-  </h1>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>ADB Commands Cheat Sheet</h1>
+            <p></p>
+          </header>
 
-  
+          <div class="article-list-header">
+            <span class="article-list-date">
+              January 2, 2015
+            </span>
+          </div>
 
-  
+          <div class="article-content">
+            <p>This is a adb commands memo.</p>
 
-  
+<!--more-->
 
-    
-    
-    
+<pre><code class="language-shell">android list targets          # Show all android platforms
 
-      
-      
+# AVD Operations
+android list avd              # Show all AVD
+android create avd --name &lt;name&gt; --target &lt;target&gt;
+android delete avd --name &lt;name&gt;
+emulator -avd &lt;name&gt; -sdcard &lt;card&gt;.img (-skin 1280x800)
 
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/android" title="See all posts by Android tag"
-      style="font-size: 135%">
-        <span>Android<small>(1)</small></span>
-      </a>
-    
+# Create SD Card
+mksdcard 1024M &lt;card&gt;.img
 
-  
+# DDMS
+ddms
 
-    
-    
-    
+# ADB
+adb devices                   # Show all available devices
+adb install -r debug.apk      # Install apk to device
+adb pull &lt;remote&gt; &lt;local&gt;     # Retrieve files from device
+adb push &lt;local&gt; &lt;remote&gt;     # Write files to device
+adb shell                     # Log in to the device
+adb root                      # Get root privilege
+adb logcat -s &lt;tag&gt;           # View log with given tag
+adb forward tcp:5555 tcp:8000 # Port forwarding
 
-      
-      
+</code></pre>
 
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/bash" title="See all posts by Bash tag"
-      style="font-size: 135%">
-        <span>Bash<small>(1)</small></span>
-      </a>
-    
+          </div>
 
-  
+          <div class="article-list-footer">
+            <div class="article-list-tags">
+              
+                <a href="/tag/android">android</a>
+              
+            </div>
+          </div>
+          <iframe src="https://button.like.co/in/embed/sharefun/button?referrer=https://hfyeh.github.io/posts/adb-cheat-sheat" frameborder="0"></iframe>
 
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/c" title="See all posts by C tag"
-      style="font-size: 135%">
-        <span>C<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/cheat-sheet" title="See all posts by Cheat sheet tag"
-      style="font-size: 150%">
-        <span>Cheat sheet<small>(2)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/git" title="See all posts by Git tag"
-      style="font-size: 135%">
-        <span>Git<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/poem" title="See all posts by Poem tag"
-      style="font-size: 135%">
-        <span>Poem<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/rails" title="See all posts by Rails tag"
-      style="font-size: 135%">
-        <span>Rails<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/reading" title="See all posts by Reading tag"
-      style="font-size: 165%">
-        <span>Reading<small>(3)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/web" title="See all posts by Web tag"
-      style="font-size: 135%">
-        <span>Web<small>(1)</small></span>
-      </a>
-    
-
-  
-</div>
-
+          
+            <div id="disqus_thread" class="article-comments"></div>
+            <script src="https://hfyeh-github-io.disqus.com/embed.js" async defer></script>
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+          
+        </article>
         <!-- <footer class="footer scrollappear">
   <p>
     © 2019 <a href="/about" title="About me">Hsueh-Fang Yeh</a>.

@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>sharefun | C 語言中的浮點數與 IEEE 754</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="C 語言中的浮點數與 IEEE 754">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://hfyeh.github.io/posts/ieee754-float-check">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="sharefun">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:url" content="https://hfyeh.github.io/posts/ieee754-float-check">
+  <meta name="twitter:title" content="C 語言中的浮點數與 IEEE 754">
+  <meta name="twitter:description" content="">
+
+  
+    <meta property="og:image" content="https://hfyeh.github.io/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
+    <meta name="twitter:image" content="https://hfyeh.github.io/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
+  
+
+  <link href="https://hfyeh.github.io/feed.xml" type="application/rss+xml" rel="alternate" title="sharefun Last 10 blog posts" />
+
+  
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/gruvbox-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+  <link rel="shortcut icon" href="image/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/assets/favicon-46bbacf73fe3235e8e27cd26f8ef158d58ca9e52dcc4e8bffc2d7f3d00476caf.ico" type="image/x-icon">
+  
+
+    
+      <link rel="apple-touch-icon" href="/assets/apple-touch-icon-light-87d1f2a3a19b1500e5c1626a0492025ca5f7f97d24540dc5900288e92112925a.png">
+      <link rel="stylesheet" type="text/css" href="/assets/light-6018d6c3c8df100a1543345eae83f02c8528e73adc9f8dd47058bba9dc1f60c1.css">
+    
+
+  
+
+</head>
+
+<body>
+  <main>
+    <div class="grid grid-centered">
+      <div class="grid-cell">
+        <nav class="header-nav scrollappear">
+  <a href="/" class="header-logo" title="sharefun">sharefun</a>
+  <ul class="header-links">
+    
+      <li>
+        <a href="/about" title="About me">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-about">
+  <use href="/assets/about-ecf154b571ab8034ae00aeed91a3b7ad68db80b46d958753ad6216c919486e88.svg#icon-about" xlink:href="/assets/about-ecf154b571ab8034ae00aeed91a3b7ad68db80b46d958753ad6216c919486e88.svg#icon-about"></use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="https://github.com/hfyeh" rel="noreferrer noopener" target="_blank" title="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-github">
+  <use href="/assets/github-094f81040819f34343ee6ffff0980f17e2807b08b595eaaf66ae3554934fd78d.svg#icon-github" xlink:href="/assets/github-094f81040819f34343ee6ffff0980f17e2807b08b595eaaf66ae3554934fd78d.svg#icon-github"></use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+      <li>
+        <a href="https://twitter.com/SharefunYeh" rel="noreferrer noopener" target="_blank" title="Twitter">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-twitter">
+  <use href="/assets/twitter-8842c33965263ad1b03a978406826677a668f94125d5837e70ab83f24b3213a7.svg#icon-twitter" xlink:href="/assets/twitter-8842c33965263ad1b03a978406826677a668f94125d5837e70ab83f24b3213a7.svg#icon-twitter"></use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+      <li>
+        <a href="https://www.facebook.com/sharefun010407" rel="noreferrer noopener" target="_blank" title="Facebook">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-facebook">
+  <use href="/assets/facebook-72c99b26d37bee65607720abb23d26b44ef30cca1187f98b0d9305be1230b1bf.svg#icon-facebook" xlink:href="/assets/facebook-72c99b26d37bee65607720abb23d26b44ef30cca1187f98b0d9305be1230b1bf.svg#icon-facebook"></use>
+</svg>
+
+        </a>
+      </li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  </ul>
+</nav>
+
+
+
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>C 語言中的浮點數與 IEEE 754</h1>
+            <p></p>
+          </header>
+
+          <div class="article-list-header">
+            <span class="article-list-date">
+              July 2, 2019
+            </span>
+          </div>
+
+          <div class="article-content">
+            <p>今天與同事討論 C 語言中，對一個浮點數取 floor 的問題。剛好最近有看到 IEEE 754 標準如何規範浮點數格式<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>，就趁此機會仔細驗證一下。仍建議看第一手資料，以下純為記錄和分享用途而已。</p>
+
+<p>先從一個問題開始，我用 GCC 編譯以下的程式碼並執行：</p>
+
+<script src="https://gist.github.com/hfyeh/3ab390a5dfbca920a675b75134900e93.js"></script>
+
+<pre><code class="language-shell">floor(f1), 20 digital points: 2.00000000000000000000
+floor(f2), 20 digital points: 3.00000000000000000000
+</code></pre>
+
+<p>為什麼 2.999999 取 floor 得到 2.0，而 2.9999999 取 floor 會得到 3.0 呢？我們的都知道，是因為浮點數有精度問題，單精度浮點數的精準度在絕大多數的機器上有效位數只到小數後第六位。這篇的目標就是從標準的角度去親自確認這件事情。</p>
+
+<!--more-->
+
+<p>首先，單精度浮點數是 32 bits，任何的小數都會轉換成二進制的科學符號後被存在這 32 個位元裡。</p>
+
+<p>借用 Wikipedia 的圖
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Float_example.svg/1180px-Float_example.svg.png" style="background-color:#fff" /></p>
+
+<p>這 32 個 bit，被分成三大部分，Sign、Exponent、Fraction（或稱 Significand/Mantissa）。</p>
+
+<ul>
+  <li>Sign：0 表示為正數，1 表示為負數。</li>
+  <li>Exponent：共 8 bits，值為 0~255，代表 2 的指數次方。由於指數也需要有正負號，如採用 Two’s Complement 來代表正負，則 0 到 127 代表 0 到 127，128 到 255 代表 -128 到 -1。</li>
+  <li>Significand：共 23 bits，但由於規定第一有效位一定要是 1，故有 24 有效位數<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup>。</li>
+</ul>
+
+<p>使用<a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">這個轉換器</a>可以知道，當想要對 f1 這個長度 8 bits 的記憶體位置存入 2.999999 時，其實際存起來的的值是 2.99999904632568359375。有效位為小數後六位（最低位 2^-23 = 0.000000119209… 為可存的離散數間的最小間隔）。對這個值取 float，自然就是得到 2.0。而對 f2 這個長度 8 bits 的記憶體位置存入 2.9999999 時，實際存起來的值是 3.0，對 3.0 取 floor 會得到 3.0。</p>
+
+<p>可以實際執行下列程式確認這點。</p>
+
+<script src="https://gist.github.com/hfyeh/9120ca3a6189e1fdd8f169186fa27690.js"></script>
+
+<pre><code class="language-shell">f1, 6 digital points: 2.999999
+f2, 6 digital points: 3.000000
+f1, 20 digital points: 2.99999904632568359375
+f2, 20 digital points: 3.00000000000000000000
+floor(f1), 20 digital points: 2.00000000000000000000
+floor(f2), 20 digital points: 3.00000000000000000000
+</code></pre>
+
+<p>同時也可以發現，<code>printf</code> 是會對其參數做過一些處理才顯示出來的（15:16）
+，這是為什麼有時候我們不能盡信 <code>printf</code> 給出的資訊的原因。用 GDB 或 Compiler 提供的 Debugger 直接對記憶體求值，才會得到未經處理的真實值。</p>
+
+<p>參考資料：https://www.bottomupcs.com/types.xhtml</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>舉例來說，可以參考 IEEE 754 對<a href="https://zh.wikipedia.org/wiki/%E5%96%AE%E7%B2%BE%E5%BA%A6%E6%B5%AE%E9%BB%9E%E6%95%B8">單精度浮點數</a>的定義。 <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>先假設我們只有 4 bits Significand 可用，Exponent 為 0 的情況下，0.5 會是這樣存 <code>0100</code>，其十進位換算方式是 <code>(0*2^0 + 1*2^-1 + 0*2^-2 + 0*2^-3)*2^0 = 0.5</code>，但這樣存的缺點是能存的離散數的差只有到 2^-3 = 0.125。假如我們規定首位一定要是 1（就像十進位的科學記號，個位數一定會大於零），以此例來說，我們需要向左推兩位，Siginicant bits 就會變成 <code>(1)0000</code>，同時因為對 Significand 左推，Exponent 必須減二變為 -2，計算結果就變成 <code>(1*2^0 + 0*2^-1 + 0*2^-2 + 0*2^-3 + 0*2^-4)*2^-1 = 0.5</code>，會得到一樣的結果，但是能存的離散數的差變小為 2^-4 = 0.0625。 <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+          </div>
+
+          <div class="article-list-footer">
+            <div class="article-list-tags">
+              
+                <a href="/tag/c">c</a>
+              
+            </div>
+          </div>
+          <iframe src="https://button.like.co/in/embed/sharefun/button?referrer=https://hfyeh.github.io/posts/ieee754-float-check" frameborder="0"></iframe>
+
+          
+            <div id="disqus_thread" class="article-comments"></div>
+            <script src="https://hfyeh-github-io.disqus.com/embed.js" async defer></script>
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+          
+        </article>
+        <!-- <footer class="footer scrollappear">
+  <p>
+    © 2019 <a href="/about" title="About me">Hsueh-Fang Yeh</a>.
+  </p>
+</footer>
+ -->
+      </div>
+    </div>
+  </main>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-56756592-10"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'UA-56756592-10');
+  </script>
+
+
+<script src="/assets/vendor-734ddaa553ebf4e6ca703bd7c567ef4a0e43b0ba799607355e56b81e88781318.js" type="text/javascript"></script>
+
+
+  <script src="/assets/webfonts-5d9e8dcfb3aff0d92ab87e22fd6e31c3fcfcdd9255df2d807380390f7eb0c46f.js" type="text/javascript"></script>
+
+
+
+  <script src="/assets/scrollappear-e2da8ea567e418637e31266cc5302126eaa79f62a2273739086358b589a89ee6.js" type="text/javascript"></script>
+
+
+<script src="/assets/application-cfde13ac81ddaf4351b2e739603e2baf688d0fcc9aba613fe62bbb1c7b037fb9.js" type="text/javascript"></script>
+
+
+</body>
+</html>

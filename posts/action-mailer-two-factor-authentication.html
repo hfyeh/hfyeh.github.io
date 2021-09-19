@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>sharefun | Tags</title>
-  <meta name="description" content="Tag cloud from all the posts">
+  <title>sharefun | ActionMailer Two-Factor Authentication</title>
+  <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:title" content="Tags">
+  <meta property="og:title" content="ActionMailer Two-Factor Authentication">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://hfyeh.github.io/tags">
-  <meta property="og:description" content="Tag cloud from all the posts">
+  <meta property="og:url" content="https://hfyeh.github.io/posts/action-mailer-two-factor-authentication">
+  <meta property="og:description" content="">
   <meta property="og:site_name" content="sharefun">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:url" content="https://hfyeh.github.io/tags">
-  <meta name="twitter:title" content="Tags">
-  <meta name="twitter:description" content="Tag cloud from all the posts">
+  <meta name="twitter:url" content="https://hfyeh.github.io/posts/action-mailer-two-factor-authentication">
+  <meta name="twitter:title" content="ActionMailer Two-Factor Authentication">
+  <meta name="twitter:description" content="">
 
   
     <meta property="og:image" content="https://hfyeh.github.io/assets/og-image-ee46bbc61b334e821e81534b1fd43f3fee6f020ec174b3c2114445695fd48c01.jpg">
@@ -121,171 +121,86 @@
 
 
 
-        <div class="tags-page">
-  <h1 class="tags-page-header">
-    Tags
-  </h1>
+        <article class="article scrollappear">
+          <header class="article-header">
+            <h1>ActionMailer Two-Factor Authentication</h1>
+            <p></p>
+          </header>
 
-  
+          <div class="article-list-header">
+            <span class="article-list-date">
+              September 27, 2017
+            </span>
+          </div>
 
-  
+          <div class="article-content">
+            <p>紀錄設定使用 Gmail 寄信時，因為寄信帳號使用二階段驗證，需要的額外設定步驟。</p>
 
-  
+<!--more-->
 
-    
-    
-    
+<h2 id="在-developmentrb-裡加入寄信的設定">在 development.rb 裡加入寄信的設定</h2>
 
-      
-      
+<pre><code class="language-ruby">  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { host:"http://localhost:3000" }
+  config.action_mailer.smtp_settings = {
+    :address =&gt; "smtp.gmail.com",
+    :port =&gt; "587",
+    :domain =&gt; "gmail.com",
+    :authentication =&gt; "plain",
+    :user_name =&gt; "我的帳號@gmail.com",
+    :password =&gt; "我的密碼",
+    :enable_starttls_auto =&gt; true
+  }
+</code></pre>
 
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/android" title="See all posts by Android tag"
-      style="font-size: 135%">
-        <span>Android<small>(1)</small></span>
-      </a>
-    
+<h2 id="建立mailer寄信程式並嘗試寄給自己">建立Mailer寄信程式，並嘗試寄給自己</h2>
 
-  
+<p><code>rails generate mailer UserMailer notify_comment</code></p>
 
-    
-    
-    
+<pre><code class="language-ruby"># user_maiiler.rb
+class UserMailer &lt; ActionMailer::Base
+  default :from =&gt; "我的帳號@gmail.com"
 
-      
-      
+  def notify_comment
+    mail(:to =&gt; "我的帳號@gmail.com", :subject =&gt; "New Comment")
+  end
+end
+</code></pre>
 
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/bash" title="See all posts by Bash tag"
-      style="font-size: 135%">
-        <span>Bash<small>(1)</small></span>
-      </a>
-    
+<h2 id="寄信">寄信</h2>
+<pre><code class="language-shell">rails c
+UserMailer.notify_comment.deliver_now!
+</code></pre>
 
-  
+<p>出現錯誤 <code>Net::SMTPAuthenticationError: 534-5.7.9 Application-specific password required.</code></p>
 
-    
-    
-    
+<h2 id="解決方式">解決方式</h2>
 
-      
-      
+<p>這是該帳號使用了二階段驗證。如果要用 Gmail 寄信，必須先從 Google 設定 App Password。</p>
 
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/c" title="See all posts by C tag"
-      style="font-size: 135%">
-        <span>C<small>(1)</small></span>
-      </a>
-    
+<p>以下是解法網址  <a href="https://support.google.com/accounts/answer/185833?hl=en">Sign in using App Passwords</a>  和  <a href="https://security.google.com/settings/security/apppasswords">設定App Password的網址</a>。</p>
 
-  
+<p>得到密碼後，直接取代掉 development.rb 中的 <code>:password =&gt; "我的密碼"</code> 即可。</p>
 
-    
-    
-    
+          </div>
 
-      
-      
+          <div class="article-list-footer">
+            <div class="article-list-tags">
+              
+                <a href="/tag/web">web</a>
+              
+                <a href="/tag/rails">rails</a>
+              
+            </div>
+          </div>
+          <iframe src="https://button.like.co/in/embed/sharefun/button?referrer=https://hfyeh.github.io/posts/action-mailer-two-factor-authentication" frameborder="0"></iframe>
 
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/cheat-sheet" title="See all posts by Cheat sheet tag"
-      style="font-size: 150%">
-        <span>Cheat sheet<small>(2)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/git" title="See all posts by Git tag"
-      style="font-size: 135%">
-        <span>Git<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/poem" title="See all posts by Poem tag"
-      style="font-size: 135%">
-        <span>Poem<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/rails" title="See all posts by Rails tag"
-      style="font-size: 135%">
-        <span>Rails<small>(1)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/reading" title="See all posts by Reading tag"
-      style="font-size: 165%">
-        <span>Reading<small>(3)</small></span>
-      </a>
-    
-
-  
-
-    
-    
-    
-
-      
-      
-
-    
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="tag-cloud" href="/tag/web" title="See all posts by Web tag"
-      style="font-size: 135%">
-        <span>Web<small>(1)</small></span>
-      </a>
-    
-
-  
-</div>
-
+          
+            <div id="disqus_thread" class="article-comments"></div>
+            <script src="https://hfyeh-github-io.disqus.com/embed.js" async defer></script>
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+          
+        </article>
         <!-- <footer class="footer scrollappear">
   <p>
     © 2019 <a href="/about" title="About me">Hsueh-Fang Yeh</a>.

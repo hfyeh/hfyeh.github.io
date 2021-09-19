@@ -1,20 +1,90 @@
----
----
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="https://www.w3.org/2005/Atom" xmlns:dc="https://purl.org/dc/elements/1.1/">
   <channel>
-    <title>{{ site.name | xml_escape }}</title>
-    <description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>
-    <link>{{ site.url }}</link>
-    <atom:link href="{{ page.path | absolute_url }}" rel="self" type="application/rss+xml" />
-    {% for post in site.posts limit:10 %}
+    <title>sharefun</title>
+    <description></description>
+    <link>https://hfyeh.github.io</link>
+    <atom:link href="https://hfyeh.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    
       <item>
-        <title>{{ post.title | xml_escape }}</title>
-        <description>{{ post.description | xml_escape }}</description>
-        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
-        <link>{{ post.url | absolute_url }}</link>
-        <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+        <title>Command Line Cheat Sheet</title>
+        <description></description>
+        <pubDate>Mon, 27 Jan 2020 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/command-line-cheat-sheet</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/command-line-cheat-sheet</guid>
       </item>
-    {% endfor %}
+    
+      <item>
+        <title>C 語言中的浮點數與 IEEE 754</title>
+        <description></description>
+        <pubDate>Tue, 02 Jul 2019 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/ieee754-float-check</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/ieee754-float-check</guid>
+      </item>
+    
+      <item>
+        <title>ActionMailer Two-Factor Authentication</title>
+        <description></description>
+        <pubDate>Wed, 27 Sep 2017 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/action-mailer-two-factor-authentication</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/action-mailer-two-factor-authentication</guid>
+      </item>
+    
+      <item>
+        <title>《青島東路三號：我的百年之憶及台灣的荒謬年代》：白色恐怖受難者的記憶歷史</title>
+        <description></description>
+        <pubDate>Wed, 05 Apr 2017 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/chingtao-east-road</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/chingtao-east-road</guid>
+      </item>
+    
+      <item>
+        <title>《網球的內心遊戲》：運動場域的學習心法是放鬆的專注</title>
+        <description></description>
+        <pubDate>Sun, 19 Mar 2017 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/the-inner-game-of-tennis</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/the-inner-game-of-tennis</guid>
+      </item>
+    
+      <item>
+        <title>轉職 Rails 工程師的一年後</title>
+        <description></description>
+        <pubDate>Sun, 19 Mar 2017 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/being-a-rails-developer-after-one-year</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/being-a-rails-developer-after-one-year</guid>
+      </item>
+    
+      <item>
+        <title>《此心不沉：陳纂地與二戰末期台灣人醫生》：二二八事件中台灣武裝起義的人物</title>
+        <description></description>
+        <pubDate>Tue, 28 Feb 2017 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/chen-and-taiwan-doctors-in-world-war-two</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/chen-and-taiwan-doctors-in-world-war-two</guid>
+      </item>
+    
+      <item>
+        <title>ADB Commands Cheat Sheet</title>
+        <description></description>
+        <pubDate>Fri, 02 Jan 2015 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/adb-cheat-sheat</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/adb-cheat-sheat</guid>
+      </item>
+    
+      <item>
+        <title>Git Cheat Sheet</title>
+        <description></description>
+        <pubDate>Thu, 01 Jan 2015 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/git-cheat-sheet</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/git-cheat-sheet</guid>
+      </item>
+    
+      <item>
+        <title>偕友觀潮於旭海</title>
+        <description></description>
+        <pubDate>Tue, 01 Jan 2008 00:00:00 +0800</pubDate>
+        <link>https://hfyeh.github.io/posts/syuhai-with-friend</link>
+        <guid isPermaLink="true">https://hfyeh.github.io/posts/syuhai-with-friend</guid>
+      </item>
+    
   </channel>
 </rss>

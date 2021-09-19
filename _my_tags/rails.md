@@ -1,4 +1,0 @@
----
-slug: rails
-name: Rails
----
