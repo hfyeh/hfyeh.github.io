@@ -3,12 +3,11 @@
 // =============================================================================
 
 .highlight {
-  padding: 25px;
-  margin: 0;
-  margin: 30px 0;
+  padding: 0;
+  margin: 10px;
   overflow: auto;
   font-weight: 400;
-  background: lighten($gray-lightest, 6);
+  background: lighten($gray-lightest, 3);
   border-radius: $base-border-radius;
   pre {
     margin: 0;
@@ -19,11 +18,21 @@
 
 .highlighter-rouge {
   padding: 2px 4px;
-  font-size: 14px;
+  margin: 0;
+  font-size: 16px;
   color: #d14;
-  background: lighten($gray-lightest, 6);
-  border: 1px solid $base-border-color;
-  border-radius: 1px;
+}
+
+p > .highlighter-rouge {
+  margin: 0;
+  background: lighten($gray-darkest, 10);
+  border: 0px solid $base-border-color;
+  border-radius: 2px;
+}
+
+pre > code.hljs {
+  margin: 10px;
+  border-radius: 4px;
 }
 
 // Responsive
@@ -31,13 +40,20 @@
 
 @include breakpoint(small) {
   .highlight {
-    padding: 25px;
     font-size: 14px;
   }
 }
 
 // Highlighting types
 // =============================================================================
+
+.highlight pre {
+  background-color: darken($gray-lightest, 10);
+}
+
+.highlight .hll {
+  background-color: darken($gray-lightest, 10);
+}
 
 // Comment
 

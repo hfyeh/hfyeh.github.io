@@ -3,12 +3,11 @@
 // =============================================================================
 
 .highlight {
-  padding: 25px;
-  margin: 0;
-  margin: 30px 0;
+  padding: 0;
+  margin: 10px;
   overflow: auto;
   font-weight: 400;
-  background-color: darken($gray-darkest, 5);
+  background-color: lighten($gray-darkest, 10);
   border-radius: $base-border-radius;
   pre {
     margin: 0;
@@ -19,11 +18,21 @@
 
 .highlighter-rouge {
   padding: 2px 4px;
-  font-size: 14px;
-  color: #f92672;
-  background: darken($gray-darkest, 5);
-  border: 1px solid $base-border-color;
-  border-radius: 1px;
+  margin: 0;
+  font-size: 16px;
+  color: #d14;
+}
+
+p > .highlighter-rouge {
+  margin: 0;
+  background: darken($gray-lightest, 10);
+  border: 0px solid $base-border-color;
+  border-radius: 2px;
+}
+
+pre > code.hljs {
+  margin: 10px;
+  border-radius: 4px;
 }
 
 // Responsive
@@ -39,11 +48,11 @@
 // =============================================================================
 
 .highlight pre {
-  background-color: darken($gray-darkest, 5);
+  background-color: lighten($gray-darkest, 10);
 }
 
 .highlight .hll {
-  background-color: darken($gray-darkest, 5);
+  background-color: lighten($gray-darkest, 10);
 }
 
 // Comment
