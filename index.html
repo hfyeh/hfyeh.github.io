@@ -7,12 +7,12 @@ description: "Chalk uses all the best tools and merges them into one premium blo
 <ul class="article-list">
   {% for post in paginator.posts %}
     <li class="article-list-item {% if site.scrollappear_enabled %}scrollappear{% endif %}">
-      <a href="{{ post.url | relative_url }}" title="{{ post.title }}">
-        <h5>
+      <h2>
+        <a href="{{ post.url | relative_url }}" title="{{ post.title }}">
           {{ post.title }}
-          {% include svg-icon.html icon="arrow-right" %}
-        </h5>
-      </a>
+        </a>
+      </h2>
+      {% include article/info-header.html post=post %}
       <p>
         {% if post.description %}
           {{ post.description }}  
@@ -20,7 +20,7 @@ description: "Chalk uses all the best tools and merges them into one premium blo
           {{ post.excerpt }}
         {% endif %}
       </p>
-      {% include article/info-footer.html post=post %}
+      {% include article/read-more.html post=post %}
     </li>
   {% endfor %}
   {% if paginator.total_pages > 1 %}
