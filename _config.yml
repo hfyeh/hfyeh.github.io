@@ -1,28 +1,36 @@
 # Mandatory settings
 
-blog_theme: light # Or use dark
-name: Chalk
-paginate: 25
-url: http://chalk.nielsenramon.com
+blog_theme: dark # Or use dark
+name: sharefun
+paginate: 10
+url: https://hfyeh.github.io # add your site url (format: https://example.com)
 
 
 # Optional settings
 
+excerpt_separator: <!--more-->
+
+theme_toggle: false # Change to true if you wish to show an icon in the navigation for dynamic theme toggling
 about_enabled: true # Change to true if you wish to show an icon in the navigation that redirects to the about page
-discus_identifier: chalk-1 # Add your Disqus identifier
-ga_analytics: UA-28631876-6 # Add your GA Tracking Id
+baseurl: # Set if blog doesn't sit at the root of the domain (format: /blog)
+discus_identifier: # hfyeh-github-io # Add your Disqus identifier
+ga_analytics: UA-56756592-10 # Add your GA Tracking Id
 local_fonts: false # Change to true if you wish to use local fonts
-rss_enabled: true # Change to false if not
+rss_enabled: false # Change to false if not
+tag_nav_enabled: false
 scrollappear_enabled: true # Change to false to disable
 tag_nav_enabled: false # Change to true if you wish to show an additional 'tag-list' navigation below the header
 theme_toggle: false # Change to true if you wish to show an icon in the navigation for dynamic theme toggling
+markdown: kramdown
+highlighter: none
+
 social:
-  dribbble: nielsenramon # Add your Dribbble handle
-  facebook: # Add your Facebook handle
-  flickr: # Add your Flickr handle
-  github: nielsenramon # Add your GitHub handle
+  dribbble: # Add your Dribbble handle
+  github: hfyeh # Add your GitHub handle
   linkedin: # Add your LinkedIn handle
-  twitter: nielsenramon # Add your Twitter handle
+  facebook: sharefun010407 # Add your Facebook handle
+  flickr: # Add your Flickr handle
+  twitter: SharefunYeh # Add your Twitter handle
   email: # Add your Email address
   bitcoin: # Add your Bitcoin link or address
   ethereum: # Add your Ethereum link or address
@@ -53,6 +61,7 @@ assets:
     - _assets/javascripts
     - _assets/stylesheets
     - _assets/yarn
+    - _assets/images
 collections:
   my_tags:
     output: true
