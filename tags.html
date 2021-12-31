@@ -18,7 +18,7 @@ sitemap: false
   {% for tag in sorted_tags %}
 
     {% assign tag_slug = tag | first %}
-    {% assign upcase_tag_slug = tag_slug | upcase %}
+    {% assign upcase_tag_slug = tag_slug %}
     {% assign no_of_posts = tag | last | size %}
 
       {% for my_tag in my_tags.docs %}
@@ -26,7 +26,7 @@ sitemap: false
           {% assign tag_name = my_tag.name %}
         {% endif %}
       {% endfor %}
-      {% assign upcase_tag_name = tag_name | upcase %}
+      {% assign upcase_tag_name = tag_name %}
 
     {% if upcase_tag_slug != "PROJECT" %}
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
