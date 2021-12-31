@@ -9,13 +9,7 @@ layout: default
         <a href="{{ post.url | relative_url }}" title="{{ post.title }}">
           <h5>{{ post.title }}</h5>
         </a>
-        <p>
-          {% if post.description %}
-            {{ post.description }}  
-          {% else %}
-            {{ post.excerpt }}
-          {% endif %}
-        </p>
+        {% include article/info-header.html post=post %}
         {% include article/info-footer.html post=post %}
       </li>
     {% endfor %}
