@@ -8,6 +8,20 @@
         </a>
       </li>
     {% endif %}
+    {% if site.social.github %}
+      <li>
+        <a href="https://github.com/{{ site.social.github }}" rel="noreferrer noopener" target="_blank" title="GitHub">
+          {% include svg-icon.html icon="github" %}
+        </a>
+      </li>
+    {% endif %}
+    {% if site.social.linkedin %}
+      <li>
+        <a href="https://www.linkedin.com/in/{{ site.social.linkedin }}" rel="noreferrer noopener" target="_blank" title="LinkedIn">
+          {% include svg-icon.html icon="linkedin" %}
+        </a>
+      </li>
+    {% endif %}
     {% if site.social.twitter %}
       <li>
         <a href="https://twitter.com/{{ site.social.twitter }}" rel="noreferrer noopener" target="_blank" title="Twitter">
@@ -26,13 +40,6 @@
       <li>
         <a href="https://medium.com/{{ site.social.medium }}" rel="noreferrer noopener" target="_blank" title="Medium">
           {% include svg-icon.html icon="medium" %}
-        </a>
-      </li>
-    {% endif %}
-    {% if site.social.github %}
-      <li>
-        <a href="https://github.com/{{ site.social.github }}" rel="noreferrer noopener" target="_blank" title="GitHub">
-          {% include svg-icon.html icon="github" %}
         </a>
       </li>
     {% endif %}
@@ -68,13 +75,6 @@
       <li>
         <a href="https://hub.docker.com/r/{{ site.social.docker }}" rel="noreferrer noopener" target="_blank" title="Docker Hub">
           {% include svg-icon.html icon="docker" %}
-        </a>
-      </li>
-    {% endif %}
-    {% if site.social.linkedin %}
-      <li>
-        <a href="https://www.linkedin.com/in/{{ site.social.linkedin }}" rel="noreferrer noopener" target="_blank" title="LinkedIn">
-          {% include svg-icon.html icon="linkedin" %}
         </a>
       </li>
     {% endif %}
