@@ -16,6 +16,9 @@
   font-weight: 700;
   color: $header-logo-color;
   text-decoration: none;
+  &:hover {
+    color: $header-logo-color;
+  }
 }
 
 .header-links {

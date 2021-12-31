@@ -4,18 +4,19 @@
 
 .article {
   display: block;
-  margin: 100px 0;
+  margin: 50px 0;
 }
 
 .article-list {
   display: block;
   padding: 0;
-  margin: 50px 0;
+  margin: 0;
   list-style: none;
   li {
     position: relative;
     display: block;
-    padding: 50px 0;
+    padding: 40px 0 50px;
+    margin: 0;
     border-bottom: 1px solid $base-border-color;
     &:last-child {
       border-bottom: 0;
@@ -24,15 +25,15 @@
       display: table;
       width: 100%;
       margin-top: -15px;
+      padding-bottom: 100px;
       a {
         display: inline-block;
         padding-top: 6px;
-        font-size: 11px;
+        font-size: 16px;
         font-weight: 600;
         letter-spacing: .1em;
         color: $gray;
         text-decoration: none;
-        text-transform: uppercase;
         transition: color $base-transition-speed linear;
         svg {
           width: 16px;
@@ -55,6 +56,14 @@
 }
 
 .article-list-item {
+  h2 {
+    a {
+      color: $article-header-title-color;
+      &:hover {
+        color: $article-header-title-color;
+      }
+    }
+  }
   a {
     text-decoration: none;
     h5 {
@@ -80,30 +89,75 @@
   p {
     display: block;
     margin: 12px 0 10px;
-    font-size: 15px;
+    font-size: 18px;
     color: $article-header-description-color;
   }
 }
 
+.article-list-header {
+  padding-bottom: 20px;
+  margin-bottom: 10px;
+}
+
+.article-list-read-more {
+  display: block;
+  margin: 10px 0 10px;
+  a {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  a {
+    padding: 5px 10px;
+    color: $white;
+    background: #B5495B;
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 7.5px;
+    border: 1px solid #CB1B45;
+    &:hover {
+      color: #CB1B45;
+      background: $white;
+    }
+    &:hover svg {
+      fill: #CB1B45;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+      margin: -2px 0 0 4px;
+      fill: $white;
+    }
+  }
+}
+
+.article-list-header,
 .article-list-footer {
   display: block;
   span,
   a {
     display: inline-block;
-    font-size: 12px;
-    color: $article-footer-color;
-    text-transform: uppercase;
     vertical-align: middle;
   }
   a {
+    padding: 1px 12px;
     margin-right: 7.5px;
-    color: $article-footer-link-color;
-    &:hover {
-      color: $article-footer-link-color-hover;
-    }
+//    color: $article-footer-color;
+//    background: $article-footer-link-color;
+//    &:hover {
+//      background: $article-footer-link-color-hover;
+//    }
     &:last-child {
       margin-right: 0;
     }
+  }
+  span {
+    font-size: 16px;
+    color: $article-footer-color;
+    float: right;
   }
 }
 
@@ -114,6 +168,11 @@
 .article-list-tags {
   display: inline-block;
   vertical-align: top;
+}
+
+.article-list-date {
+  display: inline-block;
+  text-align: right;
 }
 
 .article-empty {
@@ -136,9 +195,7 @@
 
 .article-header {
   display: block;
-  padding-bottom: 30px;
   margin-bottom: 30px;
-  border-bottom: 1px solid $base-border-color;
   p {
     display: block;
     margin: 12px 0 10px;
@@ -158,15 +215,29 @@
   img,
   blockquote {
     display: block;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
   }
   h2,
   h3,
-  h4 {
+  h4,
+  h5 {
     display: block;
     margin-bottom: 10px;
+    font-weight: 600;
     font-family: $sans-serif;
     color: $article-post-titles-color;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 18px;
+  }
+  h4 {
+    font-size: 16px;
+  }
+  h5 {
+    font-size: 14px;
   }
   blockquote p {
     margin-bottom: 0;
@@ -183,7 +254,6 @@
   display: block;
   padding-top: 20px;
   margin-top: 30px;
-  border-top: 1px solid $base-border-color;
 }
 
 .article-share {
@@ -210,6 +280,9 @@
 
 @include breakpoint(small) {
   .article-list-footer {
+    display: block;
+  }
+  .article-list-header {
     display: block;
   }
   .article-list-divider:last-of-type {
