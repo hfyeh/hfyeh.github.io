@@ -84,10 +84,31 @@
   }
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  width: 100%;
+  flex: 1;
+}
+
 // Centers your grid container with a max-width.
 
 .grid-centered {
   max-width: $max-width;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.grid-centered-extended {
+  max-width: $max-width-extended;
   margin-right: auto;
   margin-left: auto;
 }
@@ -98,5 +119,10 @@
 @include breakpoint(small) {
   .grid-cell {
     @include responsive-grid-generator();
+  }
+}
+@include breakpoint(extra-small) {
+  .column {
+    flex: 2;
   }
 }

@@ -3,10 +3,17 @@
 {% include head.html %}
 <body>
   <main>
-    <div class="grid grid-centered">
+    <div class="grid grid-centered-extended">
       <div class="grid-cell">
         {% include navigation.html %}
-        {{ content }}
+        <div class="row">
+          <main class="column">
+            {{ content }}
+          </main>
+          <aside class="column">
+            {% include sidebar.html %}
+          </aside>
+        </div>
         {% include footer.html %}
       </div>
     </div>
