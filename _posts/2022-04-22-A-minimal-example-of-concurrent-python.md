@@ -50,17 +50,8 @@ Run it twice and fix the input of `mul` to be 11 for demonstration purpose. Note
 
 ```python
 for i in range(2):
-    start = time.time()
     x = mul(11)
-    end = time.time()
-    sys.stderr.write(f'Time cost for mul {end - start}\n')
-    sys.stderr.flush()
-
-    start = time.time()
     y = add(x)
-    end = time.time()
-    sys.stderr.write(f'Time cost for add {end - start}\n')
-    sys.stderr.flush()
 ```
 
 Run it!
@@ -86,27 +77,16 @@ def mul_with_time(q1: Queue, q2: Queue) -> int:
     round = 0
     while True and round < 2:
         n = q1.get()
-        start = time.time()
-
         q2.put(mul(n))
         round += 1
-
-        end = time.time()
-        sys.stderr.write(f'Time cost for mul {end - start}\n')
-        sys.stderr.flush()
 
 def add_with_time(q: Queue) -> int:
     round = 0
     while True and round < 2:
         n = q.get()
-        start = time.time()
-
         add(n)
         round += 1
 
-        end = time.time()
-        sys.stderr.write(f'Time cost for mul {end - start}\n')
-        sys.stderr.flush()
 
 if __name__ == '__main__':
     q1 = Queue()
@@ -161,13 +141,7 @@ The work is done. But when I staring at the `2_multi_process.py` script, I found
 3_mp_mul.py
 ```python
 for i in range(2):
-    start = time.time()
-
     print(mul(11), flush=True)
-
-    end = time.time()
-    sys.stderr.write(f'Time cost for mul {end - start}\n')
-    sys.stderr.flush()
 ```
 
 3_mp_add.py
@@ -178,14 +152,7 @@ while True and round < 2:
     if (stdin == ''):
         continue
     else:
-        start = time.time()
-
         result = add(int(stdin))
-
-        end = time.time()
-        sys.stderr.write(f'Time cost for add {end - start}\n')
-        sys.stderr.flush()
-
         round += 1
 ```
 
