@@ -46,6 +46,8 @@ sequenceDiagram
 
 Run it twice and fix the input of `mul` to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below.
 
+<!--more-->
+
 ## Single Thread Version
 
 ```python
