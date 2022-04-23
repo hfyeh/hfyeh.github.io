@@ -30,9 +30,17 @@ p > .highlighter-rouge {
   border-radius: 2px;
 }
 
+code {
+  margin: 2px;
+  padding: 3px;
+  border-radius: 4px;
+  background: #282828;
+}
+
 pre > code.hljs {
   margin: 10px;
-  border-radius: 4px;
+  border-radius: 5px;
+  max-width: 620px;
 }
 
 // Responsive
