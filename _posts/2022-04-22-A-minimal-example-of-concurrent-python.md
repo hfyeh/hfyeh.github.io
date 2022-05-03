@@ -68,6 +68,8 @@ python3 0_single_thread.py  9.81s user 0.01s system 97% cpu 10.111 total
 
 Both of the two components cost about 2.5 s. (Since I choose the parameter 11 and the magic number 4000000.) The time needed for each iteration becomes long. Besides, while computing one of the components, the other cannot do any computation. The total time for finishing the loop on my machine should be around (2.5 + 2.5) * 2 = 10 s, and I got 11.111 s.
 
+![](https://i.imgur.com/APXpVNs.png)
+
 
 ## Mult-thread Version
 To assure the above sequence, I use Queue for messaging from main thread to `t1` (the `mul_with_time` thread) and `t2` (the `add_with_time` thread).
@@ -119,6 +121,8 @@ The total time got even longer! The second round `mul_with_time` and the first r
 
 This multi-thread version is a good practice since I have isolated the two components, this archetecture makes it possible to execute them concurrently (not parallel).
 
+![](https://i.imgur.com/BenastU.png)
+
 
 ## Multi-process Version
 Spawning sub-processes for both components can readily avoid them from blocking each other. Simply replace `multithreading.Thread` by `multiprocessing.Process` and `queue.Queue` by `multiprocessing.Queue` will turn this script from multi-thread version to multi-process version.
@@ -133,6 +137,8 @@ python3 2_multi_process.py  9.58s user 0.02s system 131% cpu 7.313 total
 ```
 
 This time no heavy context switches are present. Each sub-process holds its own GIL and blocks no one. First round `add_with_time` and second round `mul_with_time` are executed in parallel, i.e. both of them are actually running at a given moment. The total time should be 2.5 + 2.5 + 2.5 = 7.5 s.
+
+![](https://i.imgur.com/caNLpmW.png)
 
 
 ## Multi-process with shell
