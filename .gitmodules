@@ -1,0 +1,3 @@
+[submodule "themes/chalk"]
+	path = themes/chalk
+	url = https://github.com/ph-ph/chalk.git
