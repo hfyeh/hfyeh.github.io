@@ -1,0 +1,234 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><title>A Minimal Example of Concurrent Python - sharefun</title><meta name=description content="The CPython interpreter usese GIL (global interpreter lock), to prevent threads from executing Python bytecodes at once.
+Suppose I have two components who need to be run in parallel in a modern multi-core processor. Say, add and mul:
+def add(n: int) -> int:
+    result = 0
+
+    for i in range(n):
+        result += (i + 1)
+
+    return result
+
+
+def mul(n: int) -> None:
+    # Run many times to get longer execution period
+    for x in range(4000000):
+        result = 1
+
+        for i in range(n):
+            result *= (i + 1)
+
+    return result
+Impose that these two tiny components have to be run sequentially, mul recieves add&rsquo;s output.
+sequenceDiagram
+    participant main
+    participant mul
+    participant add
+    main->>mul: For every stdin
+    activate main
+    mul->>add: result
+    add->>mul: 
+    mul->>main: 
+    deactivate main
+Run it twice and fix the input of mul to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below."><meta name=author content><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css><script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/gruvbox-dark.min.css><script defer src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon type=image/x-icon href=https://hfyeh.github.io/images/favicon.ico><link rel=apple-touch-icon href=https://hfyeh.github.io/images/apple-touch-icon-dark.png><link rel=stylesheet href=https://hfyeh.github.io/stylesheets/dark.css><link rel="preload stylesheet" as=style href=https://hfyeh.github.io/custom.min.css><meta name=generator content="Hugo 0.104.0"><meta property="og:title" content="A Minimal Example of Concurrent Python"><meta property="og:description" content="The CPython interpreter usese GIL (global interpreter lock), to prevent threads from executing Python bytecodes at once.
+Suppose I have two components who need to be run in parallel in a modern multi-core processor. Say, add and mul:
+def add(n: int) -> int:
+    result = 0
+
+    for i in range(n):
+        result += (i + 1)
+
+    return result
+
+
+def mul(n: int) -> None:
+    # Run many times to get longer execution period
+    for x in range(4000000):
+        result = 1
+
+        for i in range(n):
+            result *= (i + 1)
+
+    return result
+Impose that these two tiny components have to be run sequentially, mul recieves add&rsquo;s output.
+sequenceDiagram
+    participant main
+    participant mul
+    participant add
+    main->>mul: For every stdin
+    activate main
+    mul->>add: result
+    add->>mul: 
+    mul->>main: 
+    deactivate main
+Run it twice and fix the input of mul to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below."><meta property="og:type" content="article"><meta property="og:url" content="https://hfyeh.github.io/posts/a-minimal-example-of-concurrent-python/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-04-22T00:00:00+00:00"><meta property="article:modified_time" content="2022-04-22T00:00:00+00:00"><meta itemprop=name content="A Minimal Example of Concurrent Python"><meta itemprop=description content="The CPython interpreter usese GIL (global interpreter lock), to prevent threads from executing Python bytecodes at once.
+Suppose I have two components who need to be run in parallel in a modern multi-core processor. Say, add and mul:
+def add(n: int) -> int:
+    result = 0
+
+    for i in range(n):
+        result += (i + 1)
+
+    return result
+
+
+def mul(n: int) -> None:
+    # Run many times to get longer execution period
+    for x in range(4000000):
+        result = 1
+
+        for i in range(n):
+            result *= (i + 1)
+
+    return result
+Impose that these two tiny components have to be run sequentially, mul recieves add&rsquo;s output.
+sequenceDiagram
+    participant main
+    participant mul
+    participant add
+    main->>mul: For every stdin
+    activate main
+    mul->>add: result
+    add->>mul: 
+    mul->>main: 
+    deactivate main
+Run it twice and fix the input of mul to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below."><meta itemprop=datePublished content="2022-04-22T00:00:00+00:00"><meta itemprop=dateModified content="2022-04-22T00:00:00+00:00"><meta itemprop=wordCount content="965"><meta itemprop=keywords content="python,gil,"><meta name=twitter:card content="summary"><meta name=twitter:title content="A Minimal Example of Concurrent Python"><meta name=twitter:description content="The CPython interpreter usese GIL (global interpreter lock), to prevent threads from executing Python bytecodes at once.
+Suppose I have two components who need to be run in parallel in a modern multi-core processor. Say, add and mul:
+def add(n: int) -> int:
+    result = 0
+
+    for i in range(n):
+        result += (i + 1)
+
+    return result
+
+
+def mul(n: int) -> None:
+    # Run many times to get longer execution period
+    for x in range(4000000):
+        result = 1
+
+        for i in range(n):
+            result *= (i + 1)
+
+    return result
+Impose that these two tiny components have to be run sequentially, mul recieves add&rsquo;s output.
+sequenceDiagram
+    participant main
+    participant mul
+    participant add
+    main->>mul: For every stdin
+    activate main
+    mul->>add: result
+    add->>mul: 
+    mul->>main: 
+    deactivate main
+Run it twice and fix the input of mul to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below."></head><body><div class="grid grid-centered"><div class=grid-cell><nav class="header-nav scrollappear"><a href=/ class=header-logo title=sharefun>sharefun</a><ul class=header-links><li><a href=https://www.facebook.com/sharefun010407 rel="noreferrer noopener" target=_blank title=Facebook><svg xmlns="http://www.w3.org/2000/svg" class="icon-facebook"><use href="https://hfyeh.github.io/icons/facebook.svg#icon-facebook" xlink:href="https://hfyeh.github.io/icons/facebook.svg#icon-facebook"/></svg></a></li><li><a href=https://github.com/hfyeh rel="noreferrer noopener" target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon-github"><use href="https://hfyeh.github.io/icons/github.svg#icon-github" xlink:href="https://hfyeh.github.io/icons/github.svg#icon-github"/></svg></a></li><li><a href=https://twitter.com/SharefunYeh rel="noreferrer noopener" target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon-twitter"><use href="https://hfyeh.github.io/icons/twitter.svg#icon-twitter" xlink:href="https://hfyeh.github.io/icons/twitter.svg#icon-twitter"/></svg></a></li></ul></nav><article class="article scrollappear"><header class=article-header><h1>A Minimal Example of Concurrent Python</h1></header><div class=article-list-header><span class=article-list-date>April 22, 2022</span></div><div class=article-content><p>The CPython interpreter usese <a href=https://wiki.python.org/moin/GlobalInterpreterLock>GIL</a> (global interpreter lock), to prevent threads from executing Python bytecodes at once.</p><p>Suppose I have two components who need to be run in parallel in a modern multi-core processor. Say, <code>add</code> and <code>mul</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add</span>(n: int) <span style=color:#f92672>-&gt;</span> int:
+</span></span><span style=display:flex><span>    result <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(n):
+</span></span><span style=display:flex><span>        result <span style=color:#f92672>+=</span> (i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> result
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>mul</span>(n: int) <span style=color:#f92672>-&gt;</span> <span style=color:#66d9ef>None</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># Run many times to get longer execution period</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> x <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>4000000</span>):
+</span></span><span style=display:flex><span>        result <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(n):
+</span></span><span style=display:flex><span>            result <span style=color:#f92672>*=</span> (i <span style=color:#f92672>+</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> result
+</span></span></code></pre></div><p>Impose that these two tiny components have to be run sequentially, <code>mul</code> recieves <code>add</code>&rsquo;s output.</p><pre tabindex=0><code class=language-mermaid data-lang=mermaid>sequenceDiagram
+    participant main
+    participant mul
+    participant add
+    main-&gt;&gt;mul: For every stdin
+    activate main
+    mul-&gt;&gt;add: result
+    add-&gt;&gt;mul: 
+    mul-&gt;&gt;main: 
+    deactivate main
+</code></pre><p>Run it twice and fix the input of <code>mul</code> to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below.</p><h2 id=single-thread-version>Single Thread Version</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>2</span>):
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>=</span> mul(<span style=color:#ae81ff>11</span>)
+</span></span><span style=display:flex><span>    y <span style=color:#f92672>=</span> add(x)
+</span></span></code></pre></div><p>Run it!</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>&gt; time python3 0_single_thread.py
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.4840409755706787
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> add 2.594242811203003
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.5620434284210205
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> add 2.4484610557556152
+</span></span><span style=display:flex><span>python3 0_single_thread.py  9.81s user 0.01s system 97% cpu 10.111 total
+</span></span></code></pre></div><p>Both of the two components cost about 2.5 s. (Since I choose the parameter 11 and the magic number 4000000.) The time needed for each iteration becomes long. Besides, while computing one of the components, the other cannot do any computation. The total time for finishing the loop on my machine should be around (2.5 + 2.5) * 2 = 10 s, and I got 11.111 s.</p><p><img src=https://i.imgur.com/APXpVNs.png alt></p><h2 id=mult-thread-version>Mult-thread Version</h2><p>To assure the above sequence, I use Queue for messaging from main thread to <code>t1</code> (the <code>mul_with_time</code> thread) and <code>t2</code> (the <code>add_with_time</code> thread).</p><p>The main thread put <code>11</code> into <code>q1</code>, the <code>mul_with_time</code> pop the <code>q1</code> and do computation and put its result to <code>q2</code>, the <code>add_with_time</code> pop <code>q2</code> and do computation.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>mul_with_time</span>(q1: Queue, q2: Queue) <span style=color:#f92672>-&gt;</span> int:
+</span></span><span style=display:flex><span>    round <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span> <span style=color:#f92672>and</span> round <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>2</span>:
+</span></span><span style=display:flex><span>        n <span style=color:#f92672>=</span> q1<span style=color:#f92672>.</span>get()
+</span></span><span style=display:flex><span>        q2<span style=color:#f92672>.</span>put(mul(n))
+</span></span><span style=display:flex><span>        round <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>add_with_time</span>(q: Queue) <span style=color:#f92672>-&gt;</span> int:
+</span></span><span style=display:flex><span>    round <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span> <span style=color:#f92672>and</span> round <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>2</span>:
+</span></span><span style=display:flex><span>        n <span style=color:#f92672>=</span> q<span style=color:#f92672>.</span>get()
+</span></span><span style=display:flex><span>        add(n)
+</span></span><span style=display:flex><span>        round <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;__main__&#39;</span>:
+</span></span><span style=display:flex><span>    q1 <span style=color:#f92672>=</span> Queue()
+</span></span><span style=display:flex><span>    q2 <span style=color:#f92672>=</span> Queue()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    t1 <span style=color:#f92672>=</span> Thread(target<span style=color:#f92672>=</span>mul_with_time, args<span style=color:#f92672>=</span>(q1, q2), daemon<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>    t2 <span style=color:#f92672>=</span> Thread(target<span style=color:#f92672>=</span>add_with_time, args<span style=color:#f92672>=</span>(q2,), daemon<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span><span style=display:flex><span>    t1<span style=color:#f92672>.</span>start()
+</span></span><span style=display:flex><span>    t2<span style=color:#f92672>.</span>start()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>2</span>):
+</span></span><span style=display:flex><span>        q1<span style=color:#f92672>.</span>put(<span style=color:#ae81ff>11</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    t1<span style=color:#f92672>.</span>join()
+</span></span><span style=display:flex><span>    t2<span style=color:#f92672>.</span>join()
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>time python3 1_multi_thread.py 
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.5354559421539307
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 6.187425374984741
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 6.396909475326538
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.273833990097046
+</span></span><span style=display:flex><span>python3 1_multi_thread.py  11.17s user 0.02s system 99% cpu 11.228 total
+</span></span></code></pre></div><p>The total time got even longer! The second round <code>mul_with_time</code> and the first round <code>add_with_time</code> are <strong>2.5x</strong> because these two threads runs simultaneously. Since there is a GIL, only one of them is actually executed at any given moment. And since there is a context switch when transit from one thread to the other, the time for both threads should be more than 2.5 + 2.5 = 5 s.</p><p>This multi-thread version is a good practice since I have isolated the two components, this archetecture makes it possible to execute them concurrently (not parallel).</p><p><img src=https://i.imgur.com/BenastU.png alt></p><h2 id=multi-process-version>Multi-process Version</h2><p>Spawning sub-processes for both components can readily avoid them from blocking each other. Simply replace <code>multithreading.Thread</code> by <code>multiprocessing.Process</code> and <code>queue.Queue</code> by <code>multiprocessing.Queue</code> will turn this script from multi-thread version to multi-process version.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>time python3 2_multi_process.py
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.4805655479431152
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.2870962619781494
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.4712436199188232
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.320164918899536
+</span></span><span style=display:flex><span>python3 2_multi_process.py  9.58s user 0.02s system 131% cpu 7.313 total
+</span></span></code></pre></div><p>This time no heavy context switches are present. Each sub-process holds its own GIL and blocks no one. First round <code>add_with_time</code> and second round <code>mul_with_time</code> are executed in parallel, i.e. both of them are actually running at a given moment. The total time should be 2.5 + 2.5 + 2.5 = 7.5 s.</p><p><img src=https://i.imgur.com/caNLpmW.png alt></p><h2 id=multi-process-with-shell>Multi-process with shell</h2><p>The work is done. But when I staring at the <code>2_multi_process.py</code> script, I found that although <code>mul_with_time</code> and <code>add_with_time</code> are well separated, there are many <em>fancy</em> stuff in my main function. For example, <code>Process</code> and <code>Queue</code> are objects that may make other programmers confused at first glance, they are not what I really concern and are not necessary actually.</p><p><code>Process</code> can be replaced by shell, and <code>Queue</code> can be replaced by pipeline <code>|</code>. Pipe first component&rsquo;s standard output to second component&rsquo;s standard input will make it.</p><p>3_mp_mul.py</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>for</span> i <span style=color:#f92672>in</span> range(<span style=color:#ae81ff>2</span>):
+</span></span><span style=display:flex><span>    print(mul(<span style=color:#ae81ff>11</span>), flush<span style=color:#f92672>=</span><span style=color:#66d9ef>True</span>)
+</span></span></code></pre></div><p>3_mp_add.py</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#66d9ef>while</span> <span style=color:#66d9ef>True</span> <span style=color:#f92672>and</span> round <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>2</span>:
+</span></span><span style=display:flex><span>    stdin <span style=color:#f92672>=</span> sys<span style=color:#f92672>.</span>stdin<span style=color:#f92672>.</span>readline()<span style=color:#f92672>.</span>rstrip()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (stdin <span style=color:#f92672>==</span> <span style=color:#e6db74>&#39;&#39;</span>):
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>continue</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>:
+</span></span><span style=display:flex><span>        result <span style=color:#f92672>=</span> add(int(stdin))
+</span></span><span style=display:flex><span>        round <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><p>Now the two components are even more isolated. In this version, each script is just a main function which listen to the standard input, do single component and then print something to its standard output. (Yes, you can change the first script so that it can listen to standard input too.)</p><p>And I get the same performance as the previous version.</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=display:flex><span>time <span style=color:#f92672>(</span>python3 3_mp_mul.py | python3 3_mp_add.py<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.516085386276245
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> add 2.300935745239258
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> mul 2.5419352054595947
+</span></span><span style=display:flex><span>Time cost <span style=color:#66d9ef>for</span> add 2.2685813903808594
+</span></span><span style=display:flex><span><span style=color:#f92672>(</span> python3 3_mp_mul.py | python3 3_mp_add.py; <span style=color:#f92672>)</span>  9.64s user 0.02s system 131% cpu 7.349 total
+</span></span></code></pre></div><p>The parenthesis that enclosing two Python processes is to create a shell sub-process so that the total time of this sub-process (which creates two processes) can be recorded.</p><p>Imagining that you and your teammates are developing a series of algorithm like <code>sum</code> and <code>add</code> which have to be run sequentially and the output of the former is the input of the latter, this architecture frees you from interference each other. You can develop, test your own component, you can also combine it with other components by a pipeline. Neat, right?</p><p>You can <a href=https://github.com/hfyeh/concurrent_python>downlaod</a> these scripts and run it yourself.</p></div><div class=article-list-footer><div class=article-list-tags><a href=https://hfyeh.github.io/tags/python/>Python</a>
+<a href=https://hfyeh.github.io/tags/gil/>GIL</a></div></div></article><footer class="footer scrollappear"><p><span>&copy; 2022 <a href=https://hfyeh.github.io>sharefun</a></span>
+<span>Powered by <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo</a></span>
+<span>Theme is based on <a href=https://github.com/nielsenramon/chalk rel="noreferrer noopener" target=_blank>Chalk</a></span></p></footer><script>var config={startOnLoad:!0,theme:"forest",classDiagram:{useMaxWidth:!1,htmlLabels:!0}};mermaid.initialize(config),window.mermaid.init(void 0,document.querySelectorAll(".language-mermaid"))</script><style>.language-mermaid>svg{background-color:#e8e8e8}</style></div></div></main><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/zooming.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/retina.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/svgxuse.min.js></script>
+<script src=https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js></script>
+<script src=https://hfyeh.github.io/javascripts/vendor.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/webfonts.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/scrollappear.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/application.min.js></script></body></html>
