@@ -1,7 +1,17 @@
-baseURL = 'http://example.org/'
+baseURL = 'https://hfyeh.github.io'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'sharefun'
 theme = 'chalk'
+ga_analytics = 'UA-56756592-10'
+[params]
+  mainSections = ['posts']
 [params.social]
-  twitter='example'
-  github='example'
+  github='hfyeh'
+  facebook='sharefun010407'
+  twitter='SharefunYeh'
+[taxonomies]
+  tag = "tags"
+[params.chalk]
+  about_enabled = false
+  scrollappear_enabled = true
+  theme_toggle = false
