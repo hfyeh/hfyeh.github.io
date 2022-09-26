@@ -29,10 +29,10 @@ sequenceDiagram
     add->>mul: 
     mul->>main: 
     deactivate main
-Run it twice and fix the input of mul to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below."><meta name=author content><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css><script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+Run it twice and fix the input of mul to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below."><meta name=author content><link rel="preload stylesheet" href=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css><script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
 <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id=MathJax-script async src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
-<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/gruvbox-dark.min.css><script defer src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js onload=hljs.initHighlightingOnLoad()></script>
+<script>MathJax={tex:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]]}}</script><script id=MathJax-script defer src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
+<link rel="preload stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/gruvbox-dark.min.css><script defer src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js onload=hljs.initHighlightingOnLoad()></script>
 <link rel=icon type=image/x-icon href=https://hfyeh.github.io/images/favicon.ico><link rel=apple-touch-icon href=https://hfyeh.github.io/images/apple-touch-icon-dark.png><link rel=stylesheet href=https://hfyeh.github.io/stylesheets/dark.css><link rel="preload stylesheet" as=style href=https://hfyeh.github.io/custom.min.css><meta name=generator content="Hugo 0.104.0"><meta property="og:title" content="A Minimal Example of Concurrent Python"><meta property="og:description" content="The CPython interpreter usese GIL (global interpreter lock), to prevent threads from executing Python bytecodes at once.
 Suppose I have two components who need to be run in parallel in a modern multi-core processor. Say, add and mul:
 def add(n: int) -> int:
