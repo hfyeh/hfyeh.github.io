@@ -58,4 +58,6 @@ Any word wrapped with two tildes (like ~~this~~) will appear crossed out.
 > Here's a callout block.
 > It supports **markdown** and [[Internal link|wikilinks]].
 
+![[cache_memory.excalidraw]]
+
 [^1]: This is a footnote
