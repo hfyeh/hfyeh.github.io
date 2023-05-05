@@ -139,7 +139,7 @@ kbd,
 samp {
   font-family: monospace, monospace;
   /* 1 */
-  font-size: 1em;
+  font-size: 0.8em;
   /* 2 */ }
 
 /**
