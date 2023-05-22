@@ -1,0 +1,251 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><title>Linux 核心設計 L03: quiz2 (2023q1) - sharefun</title><meta name=description content="This is the homework of jserv&rsquo;s Linux Kernel Internals.
+Reference: L03: quiz2"><meta name=author content><link rel="preload stylesheet" href=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css><script src=https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script>MathJax={tex:{inlineMath:[["$","$"]],displayMath:[["$$","$$"]]}}</script><script id=MathJax-script defer src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js></script>
+<link rel="preload stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/gruvbox-dark.min.css><script defer src=https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js onload=hljs.initHighlightingOnLoad()></script>
+<link rel=icon type=image/x-icon href=https://hfyeh.github.io/images/favicon.ico><link rel=apple-touch-icon href=https://hfyeh.github.io/images/apple-touch-icon-dark.png><link rel=stylesheet href=https://hfyeh.github.io/stylesheets/dark.css><link rel="preload stylesheet" as=style href=https://hfyeh.github.io/custom.min.css><meta name=generator content="Hugo 0.111.3"><meta property="og:title" content="Linux 核心設計 L03: quiz2 (2023q1)"><meta property="og:description" content="This is the homework of jserv&rsquo;s Linux Kernel Internals.
+Reference: L03: quiz2"><meta property="og:type" content="article"><meta property="og:url" content="https://hfyeh.github.io/posts/linux-kernel-internals-l03-quiz2-2023q1/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-05-11T00:00:00+00:00"><meta property="article:modified_time" content="2023-05-11T00:00:00+00:00"><meta itemprop=name content="Linux 核心設計 L03: quiz2 (2023q1)"><meta itemprop=description content="This is the homework of jserv&rsquo;s Linux Kernel Internals.
+Reference: L03: quiz2"><meta itemprop=datePublished content="2023-05-11T00:00:00+00:00"><meta itemprop=dateModified content="2023-05-11T00:00:00+00:00"><meta itemprop=wordCount content="1644"><meta itemprop=keywords content="blog,draft,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Linux 核心設計 L03: quiz2 (2023q1)"><meta name=twitter:description content="This is the homework of jserv&rsquo;s Linux Kernel Internals.
+Reference: L03: quiz2"></head><body><div class="grid grid-centered"><div class=grid-cell><nav class="header-nav scrollappear"><a href=/ class=header-logo title=sharefun>sharefun</a><ul class=header-links><li><a href=https://www.facebook.com/sharefun010407 rel="noreferrer noopener" target=_blank title=Facebook><svg xmlns="http://www.w3.org/2000/svg" class="icon-facebook"><use href="https://hfyeh.github.io/icons/facebook.svg#icon-facebook" xlink:href="https://hfyeh.github.io/icons/facebook.svg#icon-facebook"/></svg></a></li><li><a href=https://github.com/hfyeh rel="noreferrer noopener" target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon-github"><use href="https://hfyeh.github.io/icons/github.svg#icon-github" xlink:href="https://hfyeh.github.io/icons/github.svg#icon-github"/></svg></a></li><li><a href=https://twitter.com/SharefunYeh rel="noreferrer noopener" target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon-twitter"><use href="https://hfyeh.github.io/icons/twitter.svg#icon-twitter" xlink:href="https://hfyeh.github.io/icons/twitter.svg#icon-twitter"/></svg></a></li></ul></nav><article class="article scrollappear"><header class=article-header><h1>Linux 核心設計 L03: quiz2 (2023q1)</h1></header><div class=article-list-header><span class=article-list-date>May 11, 2023</span></div><div class=article-content><p>This is the homework of <a href=https://github.com/jserv>jserv</a>&rsquo;s <a href=https://wiki.csie.ncku.edu.tw/linux/schedule>Linux Kernel Internals</a>.</p><p>Reference: <a href=https://hackmd.io/@sysprog/H143OpNCo>L03: quiz2</a></p><h2 id=測驗-1>測驗 1</h2><h3 id=題目>題目</h3><p>原題目提供此程式碼，用來取得大於等於 <code>x</code> 的最接近的 2 的冪：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>uint64_t</span> <span style=color:#a6e22e>next_pow2</span>(<span style=color:#66d9ef>uint64_t</span> x)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> AAAA;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>16</span>;
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> BBBB;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> CCCC;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>其效用為填補位元表示中的 1：</p><pre tabindex=0><code>x = 0010000000000000
+x = 0011000000000000
+x = 0011110000000000
+x = 0011111111000000
+x = 0011111111111111
+</code></pre><p>最初 <code>x</code> 是 <code>0010000000000000</code>，經過一系列操作後，成為 <code>0011111111111111</code>，亦即設定 (set，即指派為 <code>1</code>) 自原本最高位元到最低位元中，所有的位元。</p><p>請補完程式碼，使其符合預期。作答規範:</p><ul><li><code>AAAA</code> 和 <code>BBBB</code> 皆為數值，且 <code>AAAA</code> 小於 <code>BBBB</code></li><li><code>CCCC</code> 為表示式</li></ul><h3 id=作答>作答</h3><p><code>x |= x>>1;</code> 是將 <code>x</code> 做 bit-wise 向右移動一位後，再與原本的數值取邏輯或。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// x = 01001001
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>x <span style=color:#f92672>|=</span> x <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span><span style=color:#75715e>// x&gt;&gt;1 00100100
+</span></span></span><span style=display:flex><span><span style=color:#75715e>// x|x&gt;&gt;1 01101101
+</span></span></span></code></pre></div><p>該程式連續進行相同的操作共七次，效用為將 <code>x</code> 之非零的最高位元設定到其後的 7 個位元，連同最高位本身，共有 8 個連續的 1。</p><p>最終目標是將最高非零位以下的所有位都填 1，可知 <code>AAAA</code> 為 <code>8</code>，作用為一次將最高非零以降的 8 個 1 向右位移 8 位。</p><p>其後經過 <code>x |= x >> 16</code> 操作後，最高非零位以下的 32 位皆為 1，故 <code>BBBB</code> 為 <code>32</code>，將該 32 位 1 往右位移 32 位並覆蓋。</p><p>考慮題目提供的幾個數值</p><ul><li><code>next_pow2(7)</code> = 8</li><li><code>next_pow2(13)</code> = 16</li><li><code>next_pow2(42)</code> = 64</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#ae81ff>7</span>  <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0111</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>13</span> <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>1101</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>42</span> <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0010</span> <span style=color:#ae81ff>1010</span>
+</span></span></code></pre></div><p>在執行到 <code>CCCC</code> 之際，其值為</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#ae81ff>7</span>  <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0111</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>15</span> <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>1111</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>63</span> <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0011</span> <span style=color:#ae81ff>1111</span>
+</span></span></code></pre></div><p>經過 <code>CCCC</code> 此表達式後，將得到</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#ae81ff>8</span>  <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>1000</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>16</span> <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0001</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>64</span> <span style=color:#f92672>=&gt;</span> <span style=color:#ae81ff>0100</span> <span style=color:#ae81ff>0000</span>
+</span></span></code></pre></div><p>可知 <code>CCCC</code> 為 <code>x+1</code>。</p><blockquote><p>[!question] 延伸問題</p><ol><li>解釋上述程式碼原理，並用 <a href=https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html><code>__builtin_clzl</code></a> 改寫</li></ol><blockquote><p>[!info] > <code>int __builtin_clz (unsigned int x)</code><br>Returns the number of leading 0-bits in x, starting at the most significant bit position. If x is 0, the result is undefined.<br><code>int __builtin_clzl (unsigned long)</code><br>Similar to <code>__builtin_clz</code>, except the argument type is unsigned long.
+> 2. 在 Linux 核心原始程式碼找出類似的使用案例並解釋
+> 3. 當上述 <code>clz</code> 內建函式已運用時，編譯器能否產生對應的 x86 指令？
+> 提示: 可執行 <code>cc -O2 -std=c99 -S next_pow2.c</code> 並觀察產生的 <code>next_pow2.s</code> 檔案，確認 <code>bsrq</code> 指令 (表示 “<a href=https://c9x.me/x86/html/file_module_x86_id_20.html>Bit Scan Reverse</a>”)</p></blockquote></blockquote><ol><li></li></ol><p>由於當 <code>x</code> 為 0 時，<code>__builtin_clzl</code> 的實作是 undefined behavior，故先對 <code>x==0</code> 的情況做處理。其餘情況，先計算最高非零位以下的位數，再將 <code>1UL</code> 右移該位數，即可得到最接近 <code>x</code> 且大於等於 <code>x</code> 的 2 的冪。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>uint64_t</span> <span style=color:#a6e22e>next_pow2_by_builtin_clzl</span>(<span style=color:#66d9ef>uint64_t</span> x) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>x)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1UL</span> <span style=color:#f92672>&lt;&lt;</span> (<span style=color:#ae81ff>64</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>__builtin_clzl</span>(x));
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><ol start=2><li></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * seq_put_hex_ll - put a number in hexadecimal notation
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @m: seq_file identifying the buffer to which data should be written
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @delimiter: a string which is printed before the number
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @v: the number
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * @width: a minimum field width
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * seq_put_hex_ll(m, &#34;&#34;, v, 8) is equal to seq_printf(m, &#34;%08llx&#34;, v)
+</span></span></span><span style=display:flex><span><span style=color:#75715e> *
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * This routine is very quick when you show lots of numbers.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> * In usual cases, it will be better to use seq_printf(). It&#39;s easier to read.
+</span></span></span><span style=display:flex><span><span style=color:#75715e> */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>seq_put_hex_ll</span>(<span style=color:#66d9ef>struct</span> seq_file <span style=color:#f92672>*</span>m, <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>delimiter,
+</span></span><span style=display:flex><span>				<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span> v, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> width)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> len;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>int</span> i;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (delimiter <span style=color:#f92672>&amp;&amp;</span> delimiter[<span style=color:#ae81ff>0</span>]) {
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>if</span> (delimiter[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>seq_putc</span>(m, delimiter[<span style=color:#ae81ff>0</span>]);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>			<span style=color:#a6e22e>seq_puts</span>(m, delimiter);
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#75715e>/* If x is 0, the result of __builtin_clzll is undefined */</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (v <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>		len <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>		len <span style=color:#f92672>=</span> (<span style=color:#66d9ef>sizeof</span>(v) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>__builtin_clzll</span>(v) <span style=color:#f92672>+</span> <span style=color:#ae81ff>3</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (len <span style=color:#f92672>&lt;</span> width)
+</span></span><span style=display:flex><span>		len <span style=color:#f92672>=</span> width;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (m<span style=color:#f92672>-&gt;</span>count <span style=color:#f92672>+</span> len <span style=color:#f92672>&gt;</span> m<span style=color:#f92672>-&gt;</span>size) {
+</span></span><span style=display:flex><span>		<span style=color:#a6e22e>seq_set_overflow</span>(m);
+</span></span><span style=display:flex><span>		<span style=color:#66d9ef>return</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>for</span> (i <span style=color:#f92672>=</span> len <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>; i <span style=color:#f92672>&gt;=</span> <span style=color:#ae81ff>0</span>; i<span style=color:#f92672>--</span>) {
+</span></span><span style=display:flex><span>		m<span style=color:#f92672>-&gt;</span>buf[m<span style=color:#f92672>-&gt;</span>count <span style=color:#f92672>+</span> i] <span style=color:#f92672>=</span> hex_asc[<span style=color:#ae81ff>0xf</span> <span style=color:#f92672>&amp;</span> v];
+</span></span><span style=display:flex><span>		v <span style=color:#f92672>=</span> v <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>4</span>;
+</span></span><span style=display:flex><span>	}
+</span></span><span style=display:flex><span>	m<span style=color:#f92672>-&gt;</span>count <span style=color:#f92672>+=</span> len;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在 fs/seq_file.c 找到 <code>__builtin_clzll</code>。此函式之作用為，將整數 <code>v</code> 以十六進位表示。</p><p><code>unsigned long long</code> 位元長度至少為 64 bits，以 64 bits，值域範圍為 $0$ 至 $2^{64}$。</p><p>其中使用到 <code>__builtin_clzll</code> 的附近程式碼為</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>	<span style=color:#66d9ef>if</span> (v <span style=color:#f92672>==</span> <span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>		len <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>		len <span style=color:#f92672>=</span> (<span style=color:#66d9ef>sizeof</span>(v) <span style=color:#f92672>*</span> <span style=color:#ae81ff>8</span> <span style=color:#f92672>-</span> <span style=color:#a6e22e>__builtin_clzll</span>(v) <span style=color:#f92672>+</span> <span style=color:#ae81ff>3</span>) <span style=color:#f92672>/</span> <span style=color:#ae81ff>4</span>;
+</span></span></code></pre></div><p>在 else 分支，<code>sizeof(x) * 8</code> 即為 <code>v</code> 實際的位元長度（以 bit 為單位）。<code>v</code> 的位元長度，減去 <code>__builtin_clzll(V)</code> 即為 MSB 算起的第一個非零位直到 LSB 的位元長度。其後除以 4 是為了將前述的位元長度轉換為十六進制值對應的位元長度，而 +3 是為了無條件進位。</p><p>假設 <code>v==0000 0000 0000 0111</code>，<code>sizeof(v) * 8</code> 得到 64，而 <code>__builtin_clzll(v)</code> 為 61，最後得到 <code>len = (64-61+3)/4 = 1</code>，可知只需要一個十六進制的位即可表達 <code>v</code>。</p><ol start=3><li></li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>next_pow2_by_builtin_clzl:              <span style=color:#960050;background-color:#1e0010>#</span> <span style=color:#960050;background-color:#1e0010>@</span>next_pow2_by_builtin_clzl
+</span></span><span style=display:flex><span>	.cfi_startproc
+</span></span><span style=display:flex><span><span style=color:#75715e># %bb.0:
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	testq	<span style=color:#f92672>%</span>rdi, <span style=color:#f92672>%</span>rdi
+</span></span><span style=display:flex><span>	je	.LBB1_1
+</span></span><span style=display:flex><span><span style=color:#75715e># %bb.2:
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	bsrq	<span style=color:#f92672>%</span>rdi, <span style=color:#f92672>%</span>rcx
+</span></span><span style=display:flex><span>	xorl	<span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>63</span>, <span style=color:#f92672>%</span>ecx
+</span></span><span style=display:flex><span>	negb	<span style=color:#f92672>%</span>cl
+</span></span><span style=display:flex><span>	movl	<span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>1</span>, <span style=color:#f92672>%</span>eax
+</span></span><span style=display:flex><span>                                        <span style=color:#75715e># kill: def $cl killed $cl killed $rcx
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	shlq	<span style=color:#f92672>%</span>cl, <span style=color:#f92672>%</span>rax
+</span></span><span style=display:flex><span>	retq
+</span></span><span style=display:flex><span>.LBB1_1:
+</span></span><span style=display:flex><span>	movl	<span style=color:#960050;background-color:#1e0010>$</span><span style=color:#ae81ff>1</span>, <span style=color:#f92672>%</span>eax
+</span></span><span style=display:flex><span>	retq
+</span></span><span style=display:flex><span>.Lfunc_end1:
+</span></span><span style=display:flex><span>	.size	next_pow2_by_builtin_clzl, .Lfunc_end1<span style=color:#f92672>-</span>next_pow2_by_builtin_clzl
+</span></span><span style=display:flex><span>	.cfi_endproc
+</span></span><span style=display:flex><span>                                        <span style=color:#75715e># -- End function
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>	.globl	main                            <span style=color:#960050;background-color:#1e0010>#</span> <span style=color:#f92672>--</span> Begin function main
+</span></span><span style=display:flex><span>	.p2align	<span style=color:#ae81ff>4</span>, <span style=color:#ae81ff>0x90</span>
+</span></span><span style=display:flex><span>	.type	main,<span style=color:#960050;background-color:#1e0010>@</span>function
+</span></span></code></pre></div><p><code>bsrq</code> 為 bit scan reverse，參照<a href=https://c9x.me/x86/html/file_module_x86_id_20.html>文件</a>，其作用為</p><blockquote><p>Description
+Searches the source operand (second operand) for the most significant set bit (1 bit). If a most significant 1 bit is found, its bit index is stored in the destination operand (first operand). The source operand can be a register or a memory location; the destination operand is a register. The bit index is an unsigned offset from bit 0 of the source operand. If the content source operand is 0, the content of the destination operand is undefined.</p></blockquote><h2 id=測驗-2>測驗 2</h2><h3 id=題目-1>題目</h3><p>給定一整數 $n$ ，回傳將 1 到 $n$ 的二進位表示法依序串接在一起所得到的二進位字串，其所代表的十進位數字 mod $10^9$+7 之值。</p><p>以下是可能的實作:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>concatenatedBinary</span>(<span style=color:#66d9ef>int</span> n)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>int</span> M <span style=color:#f92672>=</span> <span style=color:#ae81ff>1e9</span> <span style=color:#f92672>+</span> <span style=color:#ae81ff>7</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> len <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* the bit length to be shifted */</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* use long here as it potentially could overflow for int */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>long</span> ans <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; i <span style=color:#f92672>&lt;=</span> n; i<span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#75715e>/* removing the rightmost set bit
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         * e.g. 100100 -&gt; 100000
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         *      000001 -&gt; 000000
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         *      000000 -&gt; 000000
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         * after removal, if it is 0, then it means it is power of 2
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         * as all power of 2 only contains 1 set bit
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         * if it is power of 2, we increase the bit length
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         */</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(DDDD))
+</span></span><span style=display:flex><span>            len<span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>        ans <span style=color:#f92672>=</span> (i <span style=color:#f92672>|</span> (EEEE)) <span style=color:#f92672>%</span> M;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> ans;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>請補完程式碼，使其符合預期。作答規範:</p><ul><li><code>DDDD</code> 和 <code>EEEE</code> 皆為表示式</li></ul><h3 id=作答-1>作答</h3><p>考慮下列數值的二進位值，以及所需位數。</p><p>1 => 0001 => 1
+2 => 0010 => 2
+3 => 0011 => 2
+4 => 0100 => 3
+5 => 0101 => 3
+6 => 0110 => 3
+7 => 0111 => 3
+8 => 1000 => 4</p><p><code>len</code> 之目的為當前數字 <code>i</code> 的 bit length。</p><p>因為每逢 2 的冪都需要增加長度，故 <code>DDDD</code> 須判斷是否為 2 的冪。
+參考 <a href=https://graphics.stanford.edu/~seander/bithacks.html>Bit Twiddling Hacks</a> 可得 <code>DDDD</code> 為 <code>i & (i - 1)</code>。（<code>i</code> 不為零）</p><p>得到當前數字的 bit length 後，再將當前數字 <code>i</code> 與串接數字 <code>ans</code> 串接起來。可知 <code>EEEE</code> 為 <code>ans &lt;&lt; len</code>。</p><p>取 modulo 的步驟放在迴圈內每一輪都執行，與放在迴圈外只在回傳前執行，結果是相同的。這是因為對於 <code>ans</code> 做乘和加，與對 <code>ans % M</code> 做相同的乘和加結果相同。放在迴圈內的好處是，可以避免溢位。</p><blockquote><p>[!question] 延伸問題</p><ol><li>解釋上述程式碼運作原理</li><li>嘗試使用 <a href=https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html><code>__builtin_{clz,ctz,ffs}</code></a> 改寫，並改進 mod $10^9$+7 的運算</li></ol></blockquote><ol><li>已於作答區說明。</li><li><code>__builtin_{clz,ctz,ffs}</code> 的作用分別如下</li></ol><blockquote><p>Built-in Function: <code>int</code> <strong>__builtin_ffs</strong> <code>(int x)</code><a href=https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-_005f_005fbuiltin_005fffs></a>
+Returns one plus the index of the least significant 1-bit of x, or if x is zero, returns zero.</p></blockquote><blockquote><p>Built-in Function: <code>int</code> <strong>__builtin_clz</strong> <code>(unsigned int x)</code><a href=https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-_005f_005fbuiltin_005fclz></a>
+Returns the number of leading 0-bits in x, starting at the most significant bit position. If x is 0, the result is undefined.</p></blockquote><blockquote><p>Built-in Function: <code>int</code> <strong>__builtin_ctz</strong> <code>(unsigned int x)</code><a href=https://gcc.gnu.org/onlinedocs/gcc/Other-Builtins.html#index-_005f_005fbuiltin_005fctz></a>
+Returns the number of trailing 0-bits in x, starting at the least significant bit position. If x is 0, the result is undefined.</p></blockquote><p><code>__builtin_ctz</code> 可以回傳 LSB 起至最低非零位之後的零的個數。搭配 <code>__builtin_clz</code>，可將程式改為</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// Original
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(i <span style=color:#f92672>&amp;</span> (i<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>)))
+</span></span><span style=display:flex><span>    len<span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// Modified
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>if</span> (<span style=color:#a6e22e>__builtin_clz</span>(i) <span style=color:#f92672>+</span> <span style=color:#a6e22e>__builtin_ctz</span>(i) <span style=color:#f92672>==</span> (<span style=color:#66d9ef>sizeof</span>(i)<span style=color:#f92672>&lt;&lt;</span><span style=color:#ae81ff>3</span>) <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>)
+</span></span><span style=display:flex><span>    len<span style=color:#f92672>++</span>;
+</span></span></code></pre></div><h2 id=測驗-3>測驗 3</h2><h3 id=題目-2>題目</h3><p>UTF-8 字元可由 1, 2, 3, 4 個位元組構成。其中單一位元組的 UTF-8 由 ASCII 字元構成，其 MSB 必為 0。</p><p>UTF-8 的多位元組字元是由一個首位元組和 1, 2 或 3 個後續位元組 (continuation byte(s)) 所構成。後續位元組的最高 2 個位元會設定為 10。對於首位元組，最高的 2 個位元始終為 11，下表展現多位元組字元的規則:</p><table><thead><tr><th>Number of bytes</th><th>MSB Pattern</th></tr></thead><tbody><tr><td>ASCII</td><td>0xxx.xxxx</td></tr><tr><td>2 bytes</td><td>110x.xxxx 10xx.xxxx</td></tr><tr><td>3 bytes</td><td>1110.xxxx 10xx.xxxx 10xx.xxxx</td></tr><tr><td>4 bytes</td><td>1111.0xxx 10xx.xxxx 10xx.xxxx 10xx.xxxx</td></tr></tbody></table><p>若輸入的字串是一個有效的 UTF-8 序列，則計算其中的後續位元組數量，並將此數字從總字串長度中減去，即可確定字元數量。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stddef.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdint.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>size_t</span> <span style=color:#a6e22e>count_utf8</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>buf, <span style=color:#66d9ef>size_t</span> len)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>int8_t</span> <span style=color:#f92672>*</span>p <span style=color:#f92672>=</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>int8_t</span> <span style=color:#f92672>*</span>) buf;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>size_t</span> counter <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (<span style=color:#66d9ef>size_t</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; i <span style=color:#f92672>&lt;</span> len; i<span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#75715e>/* -65 is 0b10111111, anything larger in two-complement&#39;s should start
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         * new code point.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>         */</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (p[i] <span style=color:#f92672>&gt;</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>65</span>)
+</span></span><span style=display:flex><span>            counter<span style=color:#f92672>++</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> counter;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>size_t</span> <span style=color:#a6e22e>swar_count_utf8</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>buf, <span style=color:#66d9ef>size_t</span> len)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> <span style=color:#f92672>*</span>qword <span style=color:#f92672>=</span> (<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> <span style=color:#f92672>*</span>) buf;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> <span style=color:#f92672>*</span>end <span style=color:#f92672>=</span> qword <span style=color:#f92672>+</span> len <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>3</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>size_t</span> count <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (; qword <span style=color:#f92672>!=</span> end; qword<span style=color:#f92672>++</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> t0 <span style=color:#f92672>=</span> <span style=color:#f92672>*</span>qword;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> t1 <span style=color:#f92672>=</span> <span style=color:#f92672>~</span>t0;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> t2 <span style=color:#f92672>=</span> t1 <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0x04040404040404040llu</span>;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> t3 <span style=color:#f92672>=</span> t2 <span style=color:#f92672>+</span> t2;
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint64_t</span> t4 <span style=color:#f92672>=</span> t0 <span style=color:#f92672>&amp;</span> t3;
+</span></span><span style=display:flex><span>        count <span style=color:#f92672>+=</span> <span style=color:#a6e22e>__builtin_popcountll</span>(t4);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    count <span style=color:#f92672>=</span> (<span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> AAAA) <span style=color:#f92672>*</span> (len <span style=color:#f92672>/</span> <span style=color:#ae81ff>8</span>)  <span style=color:#f92672>-</span> count;
+</span></span><span style=display:flex><span>    count <span style=color:#f92672>+=</span> (len <span style=color:#f92672>&amp;</span> BBBB) <span style=color:#f92672>?</span> <span style=color:#a6e22e>count_utf8</span>((<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>) end, len <span style=color:#f92672>&amp;</span> CCCC) <span style=color:#f92672>:</span> DDDD;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> count;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>請補完程式碼，使其運作符合預期。作答規範:</p><ul><li><code>AAAA</code>, <code>BBBB</code>, <code>CCCC</code>, <code>DDDD</code> 皆為常數</li><li>以最精簡的方式展現</li></ul><h3 id=作答-2>作答</h3><p><code>qword</code> 為指向 64 bits unsigned int 的指標，一開始指向 <code>buf</code>。隨後在迴圈內，一次偏移 8 bytes。<code>end</code> 指向包含 <code>buf</code> 最末端的 8 bytes，為迴圈終止條件。如 <code>buf</code> 總長度無法被 8 bytes 整除，餘下的最後一節在迴圈中不會被處理。</p><p>迴圈結束時，<code>count</code> 值為 continuation byte 的總數，題目要求的是 UTF-8 字元的個數（即非 continuation byte 的總數）。</p><p>計算迴圈掃過的 bytes 數，減去 count 就是迴圈內的 UTF-8 字元數。故 <code>AAAA</code> 為 <code>3</code>。</p><p>接著處理 <code>buf</code> 最末段無法被 8 bytes 整除的部份（如果有的話）。首先 <code>BBBB</code> 為輔助判斷是否能被整除，故為 <code>0x111</code>，如 <code>(len & 0x111)</code> 不為零，代表 <code>len</code> 無法被 8 整除。可以被整除的情況下，不應累加任何值，故 <code>DDDD</code> 為零。</p><p><code>count_utf8</code> 第二個參數為 byte 數，故 <code>CCCC</code> 亦為 <code>0x111</code>。</p><blockquote><p>[!question] 延伸問題</p><ol><li>解釋上述程式碼運作原理，比較 SWAR 和原本的實作效能落差</li><li>在 Linux 核心原始程式碼找出 UTF-8 和 Unicode 相關字串處理的程式碼，探討其原理，並指出可能的改進空間</li></ol></blockquote><ol><li></li></ol><p><img src=https://i.imgur.com/dKGAoig.png alt></p><ol start=2><li></li></ol><h2 id=測驗-4>測驗 4</h2><h3 id=題目-3>題目</h3><p>以下程式碼可判定 16 位元無號整數是否符合特定樣式 (pattern):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdint.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdbool.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>is_pattern</span>(<span style=color:#66d9ef>uint16_t</span> x)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>x)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> (; x <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span>; x <span style=color:#f92672>&lt;&lt;=</span> <span style=color:#ae81ff>1</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>(x <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0x8000</span>))
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>return</span> false;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> true;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>改寫上述程式碼，使其達到等價行為，但更精簡有效。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>is_pattern</span>(<span style=color:#66d9ef>uint16_t</span> x)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>uint16_t</span> n <span style=color:#f92672>=</span> EEEE;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> (n <span style=color:#f92672>^</span> x) <span style=color:#f92672>&lt;</span> FFFF;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>EEEE = ?<br>FFFF = ?</p><h3 id=作答-3>作答</h3><p>在迴圈中，每次 <code>x</code> 都會左移一位，左移至全部為零為止。其中只要任何一次左移後的 <code>x</code> 的 MSB 為 0 時，if 條件式便會成立，並回傳 false。由於輸入 0 也會回傳 false，可知只有滿足 <code>x = 0xf..f0..0</code> 的樣式時（從 MSB 起，至最低位的 1 之間都必須是 1），才會回傳 true。</p><p>當 <code>EEEE</code> 為 <code>~x + 1</code> 時，若滿足樣式，則 <code>n</code> 僅有一個 1，且與 <code>x</code> 最低位的 1 位置相同；反之，會有複數個 1。</p><p>舉例來說</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// 滿足樣式
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>x <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1100</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>n <span style=color:#f92672>=</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0100</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 不滿足樣式
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>x <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1011</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>n <span style=color:#f92672>=</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0101</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>x <span style=color:#f92672>=</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>n <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>0001</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span></code></pre></div><p>取 <code>(x ^ n)</code>，以上述例子來說，會得到下列結果</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#75715e>// 滿足樣式
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>x <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1100</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>n <span style=color:#f92672>=</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0100</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>(x <span style=color:#f92672>^</span> n) <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// 不滿足樣式
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>x <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1011</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>n <span style=color:#f92672>=</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0101</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>(x <span style=color:#f92672>^</span> n) <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1110</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>x <span style=color:#f92672>=</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>n <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>0001</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span><span style=display:flex><span>(x <span style=color:#f92672>^</span> n) <span style=color:#f92672>=</span> <span style=color:#ae81ff>1111</span> <span style=color:#ae81ff>1110</span> <span style=color:#ae81ff>0000</span> <span style=color:#ae81ff>0000</span>
+</span></span></code></pre></div><p>可知不滿足的情況下，<code>x ^ n</code> 一定比 <code>x</code> 大。故 <code>FFFF</code> 為 <code>x</code>。</p><blockquote><p>[!question] 延伸問題:</p><ol><li>解釋上述程式碼運作原理</li><li>在 Linux 核心原始程式碼找出上述 bitmask 及產生器，探討應用範疇</li></ol><blockquote><p>參見 <a href=https://0xax.gitbooks.io/linux-insides/content/DataStructures/linux-datastructures-3.html>Data Structures in the Linux Kernel</a></p></blockquote></blockquote></div><div class=article-list-footer><div class=article-list-tags><a href=https://hfyeh.github.io/tags/blog/></a><a href=https://hfyeh.github.io/tags/draft/></a></div></div></article><footer class="footer scrollappear"><p><span>&copy; 2023 <a href=https://hfyeh.github.io>sharefun</a></span>
+<span>Powered by <a href=https://gohugo.io/ rel=noopener target=_blank>Hugo</a></span>
+<span>Theme is based on <a href=https://github.com/nielsenramon/chalk rel="noreferrer noopener" target=_blank>Chalk</a></span></p></footer><script>var config={startOnLoad:!0,theme:"forest",classDiagram:{useMaxWidth:!1,htmlLabels:!0}};mermaid.initialize(config),window.mermaid.init(void 0,document.querySelectorAll(".language-mermaid"))</script><style>.language-mermaid>svg{background-color:#e8e8e8}</style></div></div></main><script src=https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/zooming.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/retina.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/svgxuse.min.js></script>
+<script src=https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js></script>
+<script src=https://hfyeh.github.io/javascripts/vendor.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/webfonts.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/scrollappear.min.js></script>
+<script src=https://hfyeh.github.io/javascripts/application.min.js></script></body></html>
