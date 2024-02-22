@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on sharefun</title><link>https://hfyeh.github.io/posts/</link><description>Recent content in Posts on sharefun</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 06 Oct 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://hfyeh.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://hfyeh.github.io/posts/setup-fedora-vm-using-virtual-machine-manager/</link><pubDate>Fri, 06 Oct 2023 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/setup-fedora-vm-using-virtual-machine-manager/</guid><description>&lt;p>I&amp;rsquo;m using Ubuntu for my everyday work. Recently, I have some tasks relating SELinux. Unfortunately, SELinux is by default not enabled on Ubuntu, and the ecosystem is not as full as it in Fedora.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on sharefun</title><link>https://hfyeh.github.io/posts/</link><description>Recent content in Posts on sharefun</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 22 Feb 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://hfyeh.github.io/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>OpenWRT Config Generation</title><link>https://hfyeh.github.io/posts/openwrt-config-generation/</link><pubDate>Thu, 22 Feb 2024 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/openwrt-config-generation/</guid><description>&lt;p>In OpenWRT, all config files under &lt;code>/etc/config&lt;/code> are generated dynamically. There are scripts in &lt;code>/etc/uci-defaults&lt;/code> to construct this configuration.&lt;/p>
+&lt;p>The scripts in &lt;code>/etc/uci-defaults&lt;/code> are executed on first boot and then removed.&lt;/p></description></item><item><title>Setup Fedora VM Using Virtual Machine Manager</title><link>https://hfyeh.github.io/posts/setup-fedora-vm-using-virtual-machine-manager/</link><pubDate>Fri, 06 Oct 2023 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/setup-fedora-vm-using-virtual-machine-manager/</guid><description>&lt;p>I&amp;rsquo;m using Ubuntu for my everyday work. Recently, I have some tasks relating SELinux. Unfortunately, SELinux is by default not enabled in Ubuntu, and the ecosystem is not as full as it in Fedora.&lt;/p>
 &lt;p>In this article, I wrote down the steps to setup an Fedora VM via &lt;a href="https://virt-manager.org/">Virtual Maching Manager&lt;/a>, and using &lt;code>ssh&lt;/code> to login Fedora.&lt;/p></description></item><item><title>讀《大局》，兼憶金邊台商與我的緣份</title><link>https://hfyeh.github.io/posts/big-picture/</link><pubDate>Tue, 30 May 2023 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/big-picture/</guid><description>&lt;p>讀者：&lt;a href="https://www.facebook.com/sharefun010407">葉學舫&lt;/a>&lt;/p>
 &lt;p>&lt;img src="https://i.imgur.com/1Ah0Q43.jpg" alt="">&lt;/p>
 &lt;p>作者黃文局先生是身懷絕藝的江湖高手，在紐約經商四十年終成一方之雄，也是個飽讀中外文史，進而關懷國家興衰的世外異人，跨海資助近代的政治人物和活動，又從不露形跡於幕前。累積巨富後回台的他仿效猶太人，先後在美、台創辦全球台灣研究中心 (Global Taiwan  Institute, GTI) 與台灣勵志協會 (Taiwan Inspiration Association, TIA)，向美國政界及學界發聲，並幫助本土政權茁壯。&lt;/p>
@@ -27,18 +28,17 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> result
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Impose that these two tiny components have to be run sequentially, &lt;code>mul&lt;/code> recieves &lt;code>add&lt;/code>&amp;rsquo;s output.&lt;/p>
 &lt;pre tabindex="0">&lt;code class="language-mermaid" data-lang="mermaid">sequenceDiagram
-participant main
-participant mul
-participant add
-main-&amp;gt;&amp;gt;mul: For every stdin
-activate main
-mul-&amp;gt;&amp;gt;add: result
-add-&amp;gt;&amp;gt;mul:
-mul-&amp;gt;&amp;gt;main:
-deactivate main
+ participant main
+ participant mul
+ participant add
+ main-&amp;gt;&amp;gt;mul: For every stdin
+ activate main
+ mul-&amp;gt;&amp;gt;add: result
+ add-&amp;gt;&amp;gt;mul: 
+ mul-&amp;gt;&amp;gt;main: 
+ deactivate main
 &lt;/code>&lt;/pre>&lt;p>Run it twice and fix the input of &lt;code>mul&lt;/code> to be 11 for demonstration purpose. Note here I print the time log to the standard error on purpose. The code is listed below.&lt;/p></description></item><item><title>A Note on UML Class Diagram</title><link>https://hfyeh.github.io/posts/uml-class-diagram/</link><pubDate>Wed, 30 Mar 2022 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/uml-class-diagram/</guid><description>&lt;p>這是一篇學習 UML class diagram 的簡記。為保持文意清晰，用到術語時盡可能使用原文表示。&lt;/p></description></item><item><title>聖誕書盒</title><link>https://hfyeh.github.io/posts/books-from-sbyang.md/</link><pubDate>Fri, 31 Dec 2021 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/books-from-sbyang.md/</guid><description>&lt;p>初看&lt;a href="https://www.facebook.com/YangSzuPang">楊斯棓&lt;/a>醫師發文說要贈送書盒，我心裡想：『書盒是什麼東西？』該文章附圖是一個個的紙箱，不知裡面是什麼，也沒再探究。幾天後，陸續看到其他收到「書盒」的人開箱分享，才驚覺原來送的是書啊！&lt;/p>
-&lt;p>看著分享文中那些楊醫師精心挑選，主題圍繞在台灣、自由的書，著實心動，沒有履行再次參加有獎徵讀書心得承諾的我只好把羞恥心埋起來，伸手索書。&lt;/p></description></item><item><title>C 語言中的浮點數與 IEEE 754</title><link>https://hfyeh.github.io/posts/ieee754-float-check/</link><pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/ieee754-float-check/</guid><description>&lt;p>#c&lt;/p>
-&lt;p>今天與同事討論 C 語言中，對一個浮點數取 floor 的問題。剛好最近有看到 IEEE 754 標準如何規範浮點數格式&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>，就趁此機會仔細驗證一下。仍建議看第一手資料，以下純為記錄和分享用途而已。&lt;/p>
+&lt;p>看著分享文中那些楊醫師精心挑選，主題圍繞在台灣、自由的書，著實心動，沒有履行再次參加有獎徵讀書心得承諾的我只好把羞恥心埋起來，伸手索書。&lt;/p></description></item><item><title>C 語言中的浮點數與 IEEE 754</title><link>https://hfyeh.github.io/posts/ieee754-float-check/</link><pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate><guid>https://hfyeh.github.io/posts/ieee754-float-check/</guid><description>&lt;p>今天與同事討論 C 語言中，對一個浮點數取 floor 的問題。剛好最近有看到 IEEE 754 標準如何規範浮點數格式&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>，就趁此機會仔細驗證一下。仍建議看第一手資料，以下純為記錄和分享用途而已。&lt;/p>
 &lt;p>先從一個問題開始，我用 GCC 編譯以下的程式碼並執行：&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-shell" data-lang="shell">&lt;span style="display:flex;">&lt;span>floor&lt;span style="color:#f92672">(&lt;/span>f1&lt;span style="color:#f92672">)&lt;/span>, &lt;span style="color:#ae81ff">20&lt;/span> digital points: 2.00000000000000000000
